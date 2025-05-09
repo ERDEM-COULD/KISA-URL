@@ -30,6 +30,11 @@ app.get('/:id', (req, res) => {
     res.status(404).send('URL bulunamadı.');
   }
 });
+// shortid yerine nanoid'ı kullanıyoruz
+const { nanoid } = require('nanoid');
+
+// ID üretmek için nanoid'ı kullan
+console.log(nanoid());  // Bu, kısa ve benzersiz bir ID oluşturur
 
 app.listen(PORT, () => {
   console.log(`Sunucu çalışıyor: http://localhost:${PORT}`);
