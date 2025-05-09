@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>URL Kısaltıcı</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+      width: 300px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔗 URL Kısaltıcı</h1>
+  <form id="urlForm">
+    <input type="text" id="originalUrl" placeholder="Uzun URL girin" required><br>
+    <input type="text" id="customAlias" placeholder="Kısa URL (isteğe bağlı)"><br>
+    <button type="submit">Kısalt!</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('urlForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const originalUrl = document.getElementById('originalUrl').value;
+      const customAlias = document.getElementById('customAlias').value;
+
+      const response = await fetch('/shorten', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ originalUrl, customAlias })
+      });
+
+      const data = await response.json();
+
+      const result = document.getElementById('result');
+      if (data.shortUrl) {
+        result.innerHTML = `✅ Kısa URL: <a href="http://${data.shortUrl}" target="_blank">${data.shortUrl}</a>`;
+      } else {
+        result.textContent = `❌ Hata: ${data.error}`;
+      }
+    });
+  </script>
+</body>
+</html>
